@@ -53,9 +53,9 @@ export default function ChatsPage() {
   return (
     <div className="flex bg-gray-900 text-white" style={{ height: "53.5em" }}>
       {/* Left Sidebar */}
-      <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
+      <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700 relative">
         <h2 className="text-lg font-bold mb-4">Users</h2>
-        
+
         {/* Search Bar */}
         <input
           type="text"
@@ -69,7 +69,7 @@ export default function ChatsPage() {
           {filteredUsers.map((user) => (
             <li
               key={user.id}
-              className={`p-2 mb-2 rounded cursor-pointer ${
+              className={`p-2 mb-2 rounded cursor-pointer hover:bg-gray-600 ${
                 selectedChat === user.id ? "bg-blue-600 text-white" : "bg-gray-700"
               }`}
               onClick={() => setSelectedChat(user.id)}
@@ -79,6 +79,14 @@ export default function ChatsPage() {
             </li>
           ))}
         </ul>
+
+        {/* Floating Plus Button */}
+        <button
+          className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-blue-600 text-white text-2xl flex items-center justify-center"
+          onClick={() => alert("Add new chat")}
+        >
+          +
+        </button>
       </div>
 
       {/* Chat Area */}
