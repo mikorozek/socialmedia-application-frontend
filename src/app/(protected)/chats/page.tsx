@@ -91,7 +91,7 @@ export default function ChatsPage() {
                   ? "bg-blue-600 ml-auto text-right"
                   : "bg-gray-700 mr-auto text-left"
               }`}
-              style={{ width: 'fit-content', maxWidth: "25%" }}
+              style={{ width: 'fit-content', maxWidth: "35%" }}
             >
               <p>{message.text}</p>
               <span className="text-xs text-gray-300 block mt-1">{message.time}</span>
