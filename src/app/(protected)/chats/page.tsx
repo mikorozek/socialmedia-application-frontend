@@ -43,7 +43,7 @@ export default function ChatsPage() {
   };
 
   return (
-    <div className="flex bg-gray-900 text-white" style={{ height: "53.5em" }}>
+    <div className="flex h-screen bg-gray-900 text-white" style={{ height: "53.5em" }}>
       {/* Left Sidebar */}
       <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
         <h2 className="text-lg font-bold mb-4">Users</h2>
@@ -66,7 +66,7 @@ export default function ChatsPage() {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-700 bg-gray-800 flex-shrink-0">
+        <div className="p-4 border-b border-gray-700 bg-gray-800 flex-shrink-0" style={{ height: "4em" }}>
           {selectedChat ? (
             <h2 className="text-lg font-bold">
               {mockUsers.find((user) => user.id === selectedChat)?.name}
@@ -77,7 +77,10 @@ export default function ChatsPage() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-4 overflow-y-auto bg-gray-900">
+        <div
+          className="flex-1 p-4 overflow-y-auto bg-gray-900"
+          style={{ backgroundImage: "url('https://steamuserimages-a.akamaihd.net/ugc/1288542500298138354/4F1D2944FEFBE25D04CC95D70E6B2EE2E07064EC/?imw=512&amp;&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=false')", backgroundSize: "cover", backgroundPosition: "center" }}
+        >
           {selectedChat && mockMessages[selectedChat]?.map((message, index) => (
             <div
               key={index}
