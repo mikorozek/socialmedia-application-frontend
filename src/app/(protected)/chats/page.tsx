@@ -133,10 +133,11 @@ export default function ChatsPage() {
 
         {/* Input Area */}
         {selectedChat && (
-          <div className="p-4 border-t border-gray-700 bg-gray-1000 flex items-center flex-shrink-0" style={{ height: "5em" }}>
+          <div className="p-4 border-t border-gray-700 bg-gray-1000 flex items-center flex-shrink-0">
             <button
               className="mr-2 p-2 text-gray-500"
               onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
+              style={{fontSize:'1.5em'}}
             >
               😀
             </button>
