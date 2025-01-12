@@ -27,13 +27,14 @@ export default function ChatsPage() {
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
   const [newMessage, setNewMessage] = useState("");
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const emojis = ["😀", "😂", "😍", "👍", "🙏", "🎉", "❤️"];
 
   const handleSendMessage = () => {
     if (selectedChat && newMessage.trim()) {
       const now = new Date();
-      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       mockMessages[selectedChat].push({ sender: "self", text: newMessage, time });
       setNewMessage("");
     }
@@ -44,13 +45,28 @@ export default function ChatsPage() {
     setEmojiPickerOpen(false);
   };
 
+  // Filter users based on the search query
+  const filteredUsers = mockUsers.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex bg-gray-900 text-white" style={{ height: "53.5em" }}>
       {/* Left Sidebar */}
       <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
         <h2 className="text-lg font-bold mb-4">Users</h2>
+        
+        {/* Search Bar */}
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search chats..."
+          className="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white"
+        />
+
         <ul>
-          {mockUsers.map((user) => (
+          {filteredUsers.map((user) => (
             <li
               key={user.id}
               className={`p-2 mb-2 rounded cursor-pointer ${
@@ -81,22 +97,30 @@ export default function ChatsPage() {
         {/* Messages */}
         <div
           className="flex-1 p-4 overflow-y-auto bg-gray-900"
-          style={{ backgroundImage: "url('https://i.pinimg.com/474x/3d/8c/2f/3d8c2f2c82c1c9ef1e27be645cd1aa17.jpg?nii=t')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor: "rgba(0, 0, 0, 0.7)", backgroundBlendMode: "overlay" }}
+          style={{
+            backgroundImage:
+              "url('https://i.pinimg.com/474x/3d/8c/2f/3d8c2f2c82c1c9ef1e27be645cd1aa17.jpg?nii=t')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            backgroundBlendMode: "overlay",
+          }}
         >
-          {selectedChat && mockMessages[selectedChat]?.map((message, index) => (
-            <div
-              key={index}
-              className={`mb-4 max-w-sm p-3 rounded-lg text-white text-lg break-words ${
-                message.sender === "self"
-                  ? "bg-blue-600 ml-auto text-right"
-                  : "bg-gray-700 mr-auto text-left"
-              }`}
-              style={{ width: 'fit-content', maxWidth: "35%" }}
-            >
-              <p>{message.text}</p>
-              <span className="text-xs text-gray-300 block mt-1">{message.time}</span>
-            </div>
-          ))}
+          {selectedChat &&
+            mockMessages[selectedChat]?.map((message, index) => (
+              <div
+                key={index}
+                className={`mb-4 max-w-sm p-3 rounded-lg text-white text-lg break-words ${
+                  message.sender === "self"
+                    ? "bg-blue-600 ml-auto text-right"
+                    : "bg-gray-700 mr-auto text-left"
+                }`}
+                style={{ width: "fit-content", maxWidth: "35%" }}
+              >
+                <p>{message.text}</p>
+                <span className="text-xs text-gray-300 block mt-1">{message.time}</span>
+              </div>
+            ))}
         </div>
 
         {/* Input Area */}
@@ -129,11 +153,7 @@ export default function ChatsPage() {
       {emojiPickerOpen && (
         <div className="absolute bottom-20 right-4 w-1/4 bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-4 gap-2">
           {emojis.map((emoji) => (
-            <button
-              key={emoji}
-              onClick={() => handleEmojiClick(emoji)}
-              className="text-2xl"
-            >
+            <button key={emoji} onClick={() => handleEmojiClick(emoji)} className="text-2xl">
               {emoji}
             </button>
           ))}
