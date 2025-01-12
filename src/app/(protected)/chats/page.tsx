@@ -79,12 +79,12 @@ export default function ChatsPage() {
         {/* Messages */}
         <div
           className="flex-1 p-4 overflow-y-auto bg-gray-900"
-          style={{ backgroundImage: "url('https://steamuserimages-a.akamaihd.net/ugc/1288542500298138354/4F1D2944FEFBE25D04CC95D70E6B2EE2E07064EC/?imw=512&amp;&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=false')", backgroundSize: "cover", backgroundPosition: "center" }}
+          style={{ backgroundImage: "url('https://i.pinimg.com/474x/3d/8c/2f/3d8c2f2c82c1c9ef1e27be645cd1aa17.jpg?nii=t')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor: "rgba(0, 0, 0, 0.7)", backgroundBlendMode: "overlay" }}
         >
           {selectedChat && mockMessages[selectedChat]?.map((message, index) => (
             <div
               key={index}
-              className={`mb-2 max-w-xs p-2 rounded-lg text-white ${
+              className={`mb-4 max-w-md p-4 rounded-lg text-white text-lg ${
                 message.sender === "self"
                   ? "bg-blue-600 ml-auto text-right"
                   : "bg-gray-700 mr-auto text-left"
