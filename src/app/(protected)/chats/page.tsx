@@ -43,7 +43,7 @@ export default function ChatsPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
+    <div className="flex bg-gray-900 text-white" style={{ height: "53.5em" }}>
       {/* Left Sidebar */}
       <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
         <h2 className="text-lg font-bold mb-4">Users</h2>
@@ -66,7 +66,7 @@ export default function ChatsPage() {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-700 bg-gray-800">
+        <div className="p-4 border-b border-gray-700 bg-gray-800 flex-shrink-0">
           {selectedChat ? (
             <h2 className="text-lg font-bold">
               {mockUsers.find((user) => user.id === selectedChat)?.name}
@@ -94,7 +94,7 @@ export default function ChatsPage() {
 
         {/* Input Area */}
         {selectedChat && (
-          <div className="p-4 border-t border-gray-700 bg-gray-800 flex items-center">
+          <div className="p-4 border-t border-gray-700 bg-gray-800 flex items-center flex-shrink-0" style={{ height: "5em" }}>
             <button
               className="mr-2 p-2 text-gray-500"
               onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
