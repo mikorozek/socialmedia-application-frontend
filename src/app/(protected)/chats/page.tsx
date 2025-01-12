@@ -51,7 +51,7 @@ export default function ChatsPage() {
   );
 
   return (
-    <div className="flex bg-gray-900 text-white" style={{ height: "53.5em" }}>
+    <div className="flex text-white" style={{ height: "53.5em", backgroundColor:'#131313' }}>
       {/* Left Sidebar */}
       <div className="w-1/4 bg-gray-1000 p-4 border-r border-gray-700 relative">
         <h2 className="text-lg font-bold mb-6">Chats</h2>
