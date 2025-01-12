@@ -8,18 +8,18 @@ const mockUsers = [
   { id: 3, name: "Charlie", lastMessage: "Let's catch up soon!" },
 ];
 
-const mockMessages: Record<number, { sender: string; text: string }[]> = {
+const mockMessages: Record<number, { sender: string; text: string; time: string }[]> = {
   1: [
-    { sender: "other", text: "Hi there!" },
-    { sender: "self", text: "Hello, Alice!" },
+    { sender: "other", text: "Hi there!", time: "10:15 AM" },
+    { sender: "self", text: "Hello, Alice!", time: "10:16 AM" },
   ],
   2: [
-    { sender: "other", text: "How are you?" },
-    { sender: "self", text: "I'm good, Bob!" },
+    { sender: "other", text: "How are you?", time: "11:00 AM" },
+    { sender: "self", text: "I'm good, Bob!", time: "11:02 AM" },
   ],
   3: [
-    { sender: "other", text: "What's up?" },
-    { sender: "self", text: "Not much, Charlie." },
+    { sender: "other", text: "What's up?", time: "12:30 PM" },
+    { sender: "self", text: "Not much, Charlie.", time: "12:32 PM" },
   ],
 };
 
@@ -32,7 +32,9 @@ export default function ChatsPage() {
 
   const handleSendMessage = () => {
     if (selectedChat && newMessage.trim()) {
-      mockMessages[selectedChat].push({ sender: "self", text: newMessage });
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      mockMessages[selectedChat].push({ sender: "self", text: newMessage, time });
       setNewMessage("");
     }
   };
@@ -43,7 +45,7 @@ export default function ChatsPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white" style={{ height: "53.5em" }}>
+    <div className="flex bg-gray-900 text-white" style={{ height: "53.5em" }}>
       {/* Left Sidebar */}
       <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
         <h2 className="text-lg font-bold mb-4">Users</h2>
@@ -84,13 +86,15 @@ export default function ChatsPage() {
           {selectedChat && mockMessages[selectedChat]?.map((message, index) => (
             <div
               key={index}
-              className={`mb-4 max-w-md p-4 rounded-lg text-white text-lg ${
+              className={`mb-4 max-w-sm p-3 rounded-lg text-white text-lg break-words ${
                 message.sender === "self"
                   ? "bg-blue-600 ml-auto text-right"
                   : "bg-gray-700 mr-auto text-left"
               }`}
+              style={{ width: 'fit-content', maxWidth: "25%" }}
             >
-              {message.text}
+              <p>{message.text}</p>
+              <span className="text-xs text-gray-300 block mt-1">{message.time}</span>
             </div>
           ))}
         </div>
