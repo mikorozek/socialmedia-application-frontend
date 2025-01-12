@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 const mockUsers = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" },
-  { id: 3, name: "Charlie" },
+  { id: 1, name: "Alice", lastMessage: "Hi there! How are you?" },
+  { id: 2, name: "Bob", lastMessage: "Did you finish the project?" },
+  { id: 3, name: "Charlie", lastMessage: "Let's catch up soon!" },
 ];
 
 const mockMessages: Record<number, { sender: string; text: string }[]> = {
@@ -28,6 +28,8 @@ export default function ChatsPage() {
   const [newMessage, setNewMessage] = useState("");
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
+  const emojis = ["😀", "😂", "😍", "👍", "🙏", "🎉", "❤️"];
+
   const handleSendMessage = () => {
     if (selectedChat && newMessage.trim()) {
       mockMessages[selectedChat].push({ sender: "self", text: newMessage });
@@ -35,21 +37,27 @@ export default function ChatsPage() {
     }
   };
 
+  const handleEmojiClick = (emoji: string) => {
+    setNewMessage((prev) => prev + emoji);
+    setEmojiPickerOpen(false);
+  };
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-900 text-white">
       {/* Left Sidebar */}
-      <div className="w-1/4 bg-gray-100 p-4 border-r border-gray-300">
+      <div className="w-1/4 bg-gray-800 p-4 border-r border-gray-700">
         <h2 className="text-lg font-bold mb-4">Users</h2>
         <ul>
           {mockUsers.map((user) => (
             <li
               key={user.id}
               className={`p-2 mb-2 rounded cursor-pointer ${
-                selectedChat === user.id ? "bg-blue-500 text-white" : "bg-white"
+                selectedChat === user.id ? "bg-blue-600 text-white" : "bg-gray-700"
               }`}
               onClick={() => setSelectedChat(user.id)}
             >
-              {user.name}
+              <div className="font-semibold">{user.name}</div>
+              <div className="text-sm text-gray-400 truncate">{user.lastMessage}</div>
             </li>
           ))}
         </ul>
@@ -58,7 +66,7 @@ export default function ChatsPage() {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="p-4 border-b border-gray-300 bg-gray-200">
+        <div className="p-4 border-b border-gray-700 bg-gray-800">
           {selectedChat ? (
             <h2 className="text-lg font-bold">
               {mockUsers.find((user) => user.id === selectedChat)?.name}
@@ -69,14 +77,14 @@ export default function ChatsPage() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-4 overflow-y-auto bg-white">
+        <div className="flex-1 p-4 overflow-y-auto bg-gray-900">
           {selectedChat && mockMessages[selectedChat]?.map((message, index) => (
             <div
               key={index}
               className={`mb-2 max-w-xs p-2 rounded-lg text-white ${
                 message.sender === "self"
-                  ? "bg-blue-500 self-end"
-                  : "bg-gray-500 self-start"
+                  ? "bg-blue-600 self-end"
+                  : "bg-gray-700 self-start"
               }`}
             >
               {message.text}
@@ -86,7 +94,7 @@ export default function ChatsPage() {
 
         {/* Input Area */}
         {selectedChat && (
-          <div className="p-4 border-t border-gray-300 bg-gray-100 flex items-center">
+          <div className="p-4 border-t border-gray-700 bg-gray-800 flex items-center">
             <button
               className="mr-2 p-2 text-gray-500"
               onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
@@ -98,11 +106,11 @@ export default function ChatsPage() {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type a message"
-              className="flex-1 p-2 border rounded-lg"
+              className="flex-1 p-2 border rounded-lg bg-gray-700 text-white"
             />
             <button
               onClick={handleSendMessage}
-              className="ml-2 p-2 bg-blue-500 text-white rounded-lg"
+              className="ml-2 p-2 bg-blue-600 text-white rounded-lg"
             >
               ➤
             </button>
@@ -112,8 +120,16 @@ export default function ChatsPage() {
 
       {/* Emoji Picker */}
       {emojiPickerOpen && (
-        <div className="w-1/4 h-full border-l border-gray-300 bg-gray-100">
-          <p className="p-4">[Emoji picker placeholder]</p>
+        <div className="absolute bottom-16 right-4 w-1/4 bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-4 gap-2">
+          {emojis.map((emoji) => (
+            <button
+              key={emoji}
+              onClick={() => handleEmojiClick(emoji)}
+              className="text-2xl"
+            >
+              {emoji}
+            </button>
+          ))}
         </div>
       )}
     </div>
