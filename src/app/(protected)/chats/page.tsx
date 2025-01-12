@@ -83,8 +83,8 @@ export default function ChatsPage() {
               key={index}
               className={`mb-2 max-w-xs p-2 rounded-lg text-white ${
                 message.sender === "self"
-                  ? "bg-blue-600 self-end"
-                  : "bg-gray-700 self-start"
+                  ? "bg-blue-600 ml-auto text-right"
+                  : "bg-gray-700 mr-auto text-left"
               }`}
             >
               {message.text}
@@ -120,7 +120,7 @@ export default function ChatsPage() {
 
       {/* Emoji Picker */}
       {emojiPickerOpen && (
-        <div className="absolute bottom-16 right-4 w-1/4 bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-4 gap-2">
+        <div className="absolute bottom-20 right-4 w-1/4 bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-4 gap-2">
           {emojis.map((emoji) => (
             <button
               key={emoji}
