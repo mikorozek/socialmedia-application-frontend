@@ -122,7 +122,7 @@ export default function ProfilePage() {
                     ) : (
                         <button
                             onClick={() => setEditing(true)}
-                            className="bg-transparent border border-gray-500 text-blue-500 px-4 py-2 rounded"
+                            className="bg-transparent w-full border border-gray-400 text-gray-400 px-4 py-2 rounded"
                         >
                             🖊 Edit Profile
                         </button>
