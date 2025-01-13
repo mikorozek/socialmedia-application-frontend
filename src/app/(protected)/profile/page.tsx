@@ -90,12 +90,18 @@ export default function ProfilePage() {
 
                     {/* Stats */}
                     <div className="flex gap-8">
+                        <div>
                         <p className="text-sm text-gray-400">
-                            Posts: <span className="text-white font-bold">{mockUser.posts}</span>
+                            Posts
                         </p>
+                        <span className="text-white font-bold text-xl px-2">{mockUser.posts}</span>
+                        </div>
+                        <div>
                         <p className="text-sm text-gray-400">
-                            Friends: <span className="text-white font-bold">{mockUser.friends}</span>
+                            Friends
                         </p>
+                        <span className="text-white font-bold text-xl px-2">{mockUser.friends}</span>
+                        </div>
                     </div>
                 </div>
 
