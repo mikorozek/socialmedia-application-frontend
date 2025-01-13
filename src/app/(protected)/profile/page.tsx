@@ -57,7 +57,7 @@ export default function ProfilePage() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-[rgb(20,20,20)] border-1px relative">
-            <div className="flex flex-col gap-4 pb-16">
+            <div className="flex flex-col pb-7">
                 {/* Username, Email, and Stats */}
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-4 mb-4">
                     <div className="flex flex-col gap-2">
@@ -103,7 +103,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-4">
+                <div className="flex">
                     {editing ? (
                         <>
                             <button
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                     ) : (
                         <button
                             onClick={() => setEditing(true)}
-                            className="bg-transparent border border-blue-500 text-blue-500 px-4 py-2 rounded"
+                            className="bg-transparent border border-gray-500 text-blue-500 px-4 py-2 rounded"
                         >
                             🖊 Edit Profile
                         </button>
@@ -146,7 +146,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Bottom Navigation Panel */}
-            <div className="fixed left-auto bottom-0 w-fit-content py-4 flex justify-around items-center border-t bg-[rgb(20,20,20)]">
+            <div className="fixed left-auto bottom-0 w-full max-w-4xl mx-auto py-4 flex justify-around items-center border-t bg-[rgb(20,20,20)]">
                 <button className="text-white text-lg flex flex-col items-center">
                     🏠
                 </button>
