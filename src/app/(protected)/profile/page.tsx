@@ -49,11 +49,10 @@ export default function ProfilePage() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-[rgb(20,20,20)]">
-            <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
+            <h1 className="text-2xl font-bold mb-4">Username</h1>
             <div className="flex flex-col gap-4">
                 {/* Username */}
                 <div>
-                    <label className="block text-sm font-medium">Username</label>
                     {editing ? (
                         <input
                             type="text"
