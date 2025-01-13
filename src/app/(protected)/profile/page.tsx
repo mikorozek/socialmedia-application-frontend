@@ -67,7 +67,7 @@ export default function ProfilePage() {
                                     name="username"
                                     value={formData.username}
                                     onChange={handleInputChange}
-                                    className="border rounded px-2 py-1 w-full"
+                                    className="border rounded px-2 py-1 w-full bg-transparent"
                                 />
                             ) : (
                                 <h1 className="text-2xl font-bold">{formData.username}</h1>
@@ -80,7 +80,7 @@ export default function ProfilePage() {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    className="border rounded px-2 py-1 w-full"
+                                    className="border rounded px-2 py-1 w-full bg-transparent"
                                 />
                             ) : (
                                 <h2 className="text-lg font-bold text-gray-300">{formData.email}</h2>
@@ -121,7 +121,7 @@ export default function ProfilePage() {
                             onClick={() => setEditing(true)}
                             className="bg-blue-500 text-white px-4 py-2 rounded"
                         >
-                            Edit Profile
+                            🖊Edit Profile
                         </button>
                     )}
                 </div>
