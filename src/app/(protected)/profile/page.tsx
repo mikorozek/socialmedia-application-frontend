@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function ProfilePage() {
     const { data: session, status: sessionStatus, update } = useSession();
@@ -91,16 +92,12 @@ export default function ProfilePage() {
                     {/* Stats */}
                     <div className="flex gap-8">
                         <div>
-                        <p className="text-sm text-gray-400">
-                            Posts
-                        </p>
-                        <span className="text-white font-bold text-xl px-2">{mockUser.posts}</span>
+                            <p className="text-sm text-gray-400">Posts</p>
+                            <span className="text-white font-bold text-xl px-2">{mockUser.posts}</span>
                         </div>
                         <div>
-                        <p className="text-sm text-gray-400">
-                            Friends
-                        </p>
-                        <span className="text-white font-bold text-xl px-2">{mockUser.friends}</span>
+                            <p className="text-sm text-gray-400">Friends</p>
+                            <span className="text-white font-bold text-xl px-2">{mockUser.friends}</span>
                         </div>
                     </div>
                 </div>
@@ -125,9 +122,9 @@ export default function ProfilePage() {
                     ) : (
                         <button
                             onClick={() => setEditing(true)}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            className="bg-transparent border border-blue-500 text-blue-500 px-4 py-2 rounded"
                         >
-                            🖊Edit Profile
+                            🖊 Edit Profile
                         </button>
                     )}
                 </div>
@@ -142,10 +139,25 @@ export default function ProfilePage() {
                             key={index}
                             src={photo}
                             alt={`User photo ${index + 1}`}
-                            className="w-full aspect-square object-cover"
+                            className="w-full aspect-square object-cover cursor-pointer"
                         />
                     ))}
                 </div>
+            </div>
+
+            {/* Bottom Navigation Panel */}
+            <div className="fixed bottom-0 left-0 w-full bg-gray-800 py-4 flex justify-around items-center border-t border-gray-700">
+                <button className="text-white text-lg flex flex-col items-center">
+                    🏠
+                </button>
+                <button className="bg-gray-500 text-white text-lg rounded-full w-12 h-12 flex items-center justify-center">
+                    ➕
+                </button>
+                <Link href="/chats">
+                    <button className="text-white text-lg flex rounded-full items-center">
+                        💬
+                    </button>
+                </Link>
             </div>
         </div>
     );
