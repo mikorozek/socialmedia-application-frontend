@@ -5,10 +5,19 @@ import { useState } from "react";
 
 export default function ProfilePage() {
     const { data: session, status: sessionStatus, update } = useSession();
+
+    // Mock user data
+    const mockUser = {
+        username: session?.user?.name || "MockUser",
+        email: session?.user?.email || "mockuser@example.com",
+        posts: 42,
+        friends: 128,
+    };
+
     const [editing, setEditing] = useState(false);
     const [formData, setFormData] = useState({
-        username: session?.user?.name || "",
-        email: session?.user?.email || "",
+        username: mockUser.username,
+        email: mockUser.email,
     });
 
     const mockPhotos = [
@@ -29,10 +38,8 @@ export default function ProfilePage() {
         try {
             // Mock API call
             await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
-
             console.log("Mock Save: ", formData);
-            // Mock updating session
-            await update();
+            await update(); // Mock updating session
             setEditing(false);
         } catch (error) {
             console.error("Failed to save profile changes", error);
@@ -48,38 +55,50 @@ export default function ProfilePage() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-[rgb(20,20,20)]">
-            <h1 className="text-2xl font-bold mb-4">Username</h1>
+        <div className="max-w-4xl mx-auto p-6 bg-[rgb(20,20,20)] border-1px">
             <div className="flex flex-col gap-4">
-                {/* Username */}
-                <div>
-                    {editing ? (
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            className="border rounded px-2 py-1 w-full"
-                        />
-                    ) : (
-                        <p className="text-lg">{formData.username}</p>
-                    )}
+                {/* Username, Email, and Stats */}
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-4 mb-4">
+                    <div className="flex flex-col gap-2">
+                        <div>
+                            {editing ? (
+                                <input
+                                    type="text"
+                                    name="username"
+                                    value={formData.username}
+                                    onChange={handleInputChange}
+                                    className="border rounded px-2 py-1 w-full"
+                                />
+                            ) : (
+                                <h1 className="text-2xl font-bold">{formData.username}</h1>
+                            )}
+                        </div>
+                        <div>
+                            {editing ? (
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className="border rounded px-2 py-1 w-full"
+                                />
+                            ) : (
+                                <h2 className="text-lg font-bold text-gray-300">{formData.email}</h2>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="flex gap-8">
+                        <p className="text-sm text-gray-400">
+                            Posts: <span className="text-white font-bold">{mockUser.posts}</span>
+                        </p>
+                        <p className="text-sm text-gray-400">
+                            Friends: <span className="text-white font-bold">{mockUser.friends}</span>
+                        </p>
+                    </div>
                 </div>
-                {/* Email */}
-                <div>
-                    <label className="block text-sm font-medium">Email</label>
-                    {editing ? (
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className="border rounded px-2 py-1 w-full"
-                        />
-                    ) : (
-                        <p className="text-lg">{formData.email}</p>
-                    )}
-                </div>
+
                 {/* Actions */}
                 <div className="flex gap-4">
                     {editing ? (
@@ -100,13 +119,14 @@ export default function ProfilePage() {
                     ) : (
                         <button
                             onClick={() => setEditing(true)}
-                            className="bg-blue-500 text-white px-4 py-2 rounded flex items-center gap-2"
+                            className="bg-blue-500 text-white px-4 py-2 rounded"
                         >
-                            <span>🖊️</span> Edit Profile
+                            Edit Profile
                         </button>
                     )}
                 </div>
             </div>
+
             {/* User Photos */}
             <div className="mt-8">
                 <h2 className="text-xl font-bold mb-4">Your Photos</h2>
