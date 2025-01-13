@@ -56,8 +56,8 @@ export default function ProfilePage() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-[rgb(20,20,20)] border-1px">
-            <div className="flex flex-col gap-4">
+        <div className="max-w-4xl mx-auto p-6 bg-[rgb(20,20,20)] border-1px relative">
+            <div className="flex flex-col gap-4 pb-16">
                 {/* Username, Email, and Stats */}
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-4 mb-4">
                     <div className="flex flex-col gap-2">
@@ -146,7 +146,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Bottom Navigation Panel */}
-            <div className="left-0 w-full py-4 flex justify-around items-center border-t border-gray-700">
+            <div className="fixed left-auto bottom-0 w-fit-content py-4 flex justify-around items-center border-t bg-[rgb(20,20,20)]">
                 <button className="text-white text-lg flex flex-col items-center">
                     🏠
                 </button>
