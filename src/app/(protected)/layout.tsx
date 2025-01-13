@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function ProtectedLayout({
     children,
@@ -8,7 +9,8 @@ export default function ProtectedLayout({
     return (
         <>
             <Header />
-            <main>{children}</main>
+            <main className="relative pb-20">{children}</main> {/* Add padding for footer */}
+            <Footer />
         </>
     );
 }
