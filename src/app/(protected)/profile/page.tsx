@@ -42,22 +42,6 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
             <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
             <div className="flex flex-col gap-4">
-                {/* Profile Photo */}
-                <div className="flex items-center gap-4">
-                    <img
-                        alt="Profile Picture"
-                        className="w-20 h-20 rounded-full object-cover border"
-                    />
-                    {editing && (
-                        <input
-                            type="url"
-                            name="photo_url"
-                            onChange={handleInputChange}
-                            placeholder="Photo URL"
-                            className="border rounded px-2 py-1"
-                        />
-                    )}
-                </div>
                 {/* Username */}
                 <div>
                     <label className="block text-sm font-medium">Username</label>
