@@ -111,13 +111,13 @@ export default function ProfilePage() {
             {/* User Photos */}
             <div className="mt-8">
                 <h2 className="text-xl font-bold mb-4">Your Photos</h2>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-0">
                     {mockPhotos.map((photo, index) => (
                         <img
                             key={index}
                             src={photo}
                             alt={`User photo ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-md border cursor-pointer hover:opacity-90"
+                            className="w-full aspect-square object-cover"
                         />
                     ))}
                 </div>
