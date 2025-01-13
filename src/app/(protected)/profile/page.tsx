@@ -2,7 +2,6 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import Link from "next/link";
 
 export default function ProfilePage() {
     const { data: session, status: sessionStatus, update } = useSession();
@@ -143,26 +142,6 @@ export default function ProfilePage() {
                         />
                     ))}
                 </div>
-            </div>
-
-            {/* Bottom Navigation Panel */}
-            <div className="fixed left-auto bottom-0 w-full max-w-4xl mx-auto py-4 flex justify-around items-center border-t bg-[rgb(20,20,20)]">
-                <button className="text-white text-lg flex flex-col items-center">
-                    🏠
-                </button>
-                <button className="bg-gray-500 text-white text-lg rounded-full w-12 h-12 flex items-center justify-center">
-                    ➕
-                </button>
-                <Link href="/chats">
-                    <button className="text-white text-lg flex rounded-full items-center">
-                        💬
-                    </button>
-                </Link>
-                <Link href="/profile">
-                    <button className="text-white text-lg flex rounded-full items-center">
-                        👤
-                    </button>
-                </Link>
             </div>
         </div>
     );
