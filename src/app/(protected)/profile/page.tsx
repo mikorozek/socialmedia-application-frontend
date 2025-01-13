@@ -11,6 +11,15 @@ export default function ProfilePage() {
         email: session?.user?.email || "",
     });
 
+    const mockPhotos = [
+        "https://avatars.mds.yandex.net/i?id=f64710d1da958f2fc884be6cb109e1faa58442e8ddd00328-5268818-images-thumbs&n=13",
+        "https://avatars.mds.yandex.net/i?id=5c435ce2f5d829ca6bb9063ac5b719edf517573e-4760093-images-thumbs&n=13",
+        "https://avatars.mds.yandex.net/i?id=6ca41deaa718f85ac31ebf328e03e8aa5a4d373c-8803246-images-thumbs&n=13",
+        "https://avatars.mds.yandex.net/i?id=fd80bee0471ddeb3e29af02e5cd18894bf4bc4c8-8211098-images-thumbs&n=13",
+        "https://avatars.mds.yandex.net/i?id=ef11d5450b7f8b3ec74d1cba2d81a1ff6fb485a6-4275191-images-thumbs&n=13",
+        "https://avatars.mds.yandex.net/i?id=e5ef885c198986dafc8d71d029b794876875ef8a-10544851-images-thumbs&n=13",
+    ];
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -42,6 +51,7 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
             <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
             <div className="flex flex-col gap-4">
+                
                 {/* Username */}
                 <div>
                     <label className="block text-sm font-medium">Username</label>
@@ -97,6 +107,20 @@ export default function ProfilePage() {
                             Edit Profile
                         </button>
                     )}
+                </div>
+            </div>
+            {/* User Photos */}
+            <div className="mt-8">
+                <h2 className="text-xl font-bold mb-4">Your Photos</h2>
+                <div className="grid grid-cols-3 gap-4">
+                    {mockPhotos.map((photo, index) => (
+                        <img
+                            key={index}
+                            src={photo}
+                            alt={`User photo ${index + 1}`}
+                            className="w-full h-32 object-cover rounded-md border"
+                        />
+                    ))}
                 </div>
             </div>
         </div>
