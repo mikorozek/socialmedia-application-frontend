@@ -146,7 +146,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Bottom Navigation Panel */}
-            <div className="fixed bottom-0 left-0 w-full bg-gray-800 py-4 flex justify-around items-center border-t border-gray-700">
+            <div className="left-0 w-full py-4 flex justify-around items-center border-t border-gray-700">
                 <button className="text-white text-lg flex flex-col items-center">
                     🏠
                 </button>
@@ -156,6 +156,11 @@ export default function ProfilePage() {
                 <Link href="/chats">
                     <button className="text-white text-lg flex rounded-full items-center">
                         💬
+                    </button>
+                </Link>
+                <Link href="/profile">
+                    <button className="text-white text-lg flex rounded-full items-center">
+                        👤
                     </button>
                 </Link>
             </div>
