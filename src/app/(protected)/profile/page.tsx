@@ -51,7 +51,6 @@ export default function ProfilePage() {
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
             <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
             <div className="flex flex-col gap-4">
-                
                 {/* Username */}
                 <div>
                     <label className="block text-sm font-medium">Username</label>
@@ -102,9 +101,9 @@ export default function ProfilePage() {
                     ) : (
                         <button
                             onClick={() => setEditing(true)}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            className="bg-blue-500 text-white px-4 py-2 rounded flex items-center gap-2"
                         >
-                            Edit Profile
+                            <span>🖊️</span> Edit Profile
                         </button>
                     )}
                 </div>
@@ -118,7 +117,7 @@ export default function ProfilePage() {
                             key={index}
                             src={photo}
                             alt={`User photo ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-md border"
+                            className="w-full h-32 object-cover rounded-md border cursor-pointer hover:opacity-90"
                         />
                     ))}
                 </div>
