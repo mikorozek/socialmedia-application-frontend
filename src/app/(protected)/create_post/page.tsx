@@ -92,13 +92,13 @@ export default function CreatePostPage() {
             value={caption}
             placeholder="Type here a caption for your post..."
             onChange={(e) => setCaption(e.target.value)}
-            className="mt-1 w-full block border border-gray-900 rounded-md shadow-sm bg-transparent p-5"
+            className="mt-1 w-full block border-b border-gray-900 rounded-md shadow-sm bg-transparent p-5 focus:outline-none focus:border-gray-700 caret-blue-500"
           />
         </div>
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 "
           disabled={isSubmitting}
         >
           {isSubmitting ? "Publishing..." : "Publish"}
