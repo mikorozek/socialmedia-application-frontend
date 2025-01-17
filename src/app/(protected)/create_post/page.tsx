@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 
 export default function CreatePostPage() {
   const { data: session, status: sessionStatus } = useSession();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [caption, setCaption] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,6 +14,11 @@ export default function CreatePostPage() {
     const file = event.target.files?.[0];
     if (file) {
       setImage(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -26,21 +32,15 @@ export default function CreatePostPage() {
     setIsSubmitting(true);
 
     try {
-      // Simulate converting file to base64 to mimic server-side logic
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64Image = reader.result as string;
-
-        // Add to mock posts list
-        setMockPosts((prevPosts) => [
-          ...prevPosts,
-          { image: base64Image, caption },
-        ]);
-        alert("Mock post created successfully!");
-        setImage(null);
-        setCaption("");
-      };
-      reader.readAsDataURL(image);
+      // Add to mock posts list
+      setMockPosts((prevPosts) => [
+        ...prevPosts,
+        { image: imagePreview!, caption },
+      ]);
+      alert("Mock post created successfully!");
+      setImage(null);
+      setImagePreview(null);
+      setCaption("");
     } catch (error) {
       console.error("Error creating post:", error);
       alert("An error occurred. Please try again.");
@@ -61,20 +61,28 @@ export default function CreatePostPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create a Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Upload Image
-          </label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="mt-1 block w-full"
-          />
+        <div className="flex items-center space-x-4">
+          {imagePreview ? (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded-md border"
+            />
+          ) : (
+            <label
+              htmlFor="image"
+              className="w-32 h-32 flex items-center justify-center border border-dashed border-gray-300 rounded-md cursor-pointer text-gray-500 hover:bg-gray-100"
+            >
+              <span className="text-sm">+ Add Photo</span>
+              <input
+                type="file"
+                id="image"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
+          )}
         </div>
         <div>
           <label
