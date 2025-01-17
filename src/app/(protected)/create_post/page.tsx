@@ -61,12 +61,13 @@ export default function CreatePostPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create a Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
         <div className="flex items-center justify-center">
           {imagePreview ? (
             <img
               src={imagePreview}
               alt="Preview"
-              className="max-w-[60rem] h-[35rem] object-contain rounded-md"
+              className="w-[60rem] max-h-[35rem] object-contain rounded-md"
             />
           ) : (
             <label
@@ -84,14 +85,16 @@ export default function CreatePostPage() {
             </label>
           )}
         </div>
-        <div>
+        <div className="w-full">
           <input
             type="text"
             id="caption"
             value={caption}
+            placeholder="Type here a caption for your post..."
             onChange={(e) => setCaption(e.target.value)}
-            className="mt-1 block w-full border border-gray-900 rounded-md shadow-sm bg-transparent"
+            className="mt-1 w-full block border border-gray-900 rounded-md shadow-sm bg-transparent p-5"
           />
+        </div>
         </div>
         <button
           type="submit"
