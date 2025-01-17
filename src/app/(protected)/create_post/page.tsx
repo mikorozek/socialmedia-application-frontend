@@ -61,7 +61,7 @@ export default function CreatePostPage() {
 
   return (
     <div className="container mx-auto w-[60rem] p-4">
-       <Link href="/profile" className="text-blue-600 hover:underline flex items-center mb-4">
+       <Link href="/profile" className="text-gray-400 hover:underline flex items-center mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -78,7 +78,7 @@ export default function CreatePostPage() {
         </svg>
         Back to Profile
       </Link>
-      <h1 className="text-2xl font-bold mb-4 text-[2rem] m-10">Create a Post</h1>
+      <h1 className="text-2xl font-bold mb-4 text-[2rem] m-t-10">Create a Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
         <div className="flex items-center justify-center">
