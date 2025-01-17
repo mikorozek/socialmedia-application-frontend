@@ -61,12 +61,12 @@ export default function CreatePostPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create a Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center justify-center">
           {imagePreview ? (
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-32 h-32 object-cover rounded-md border"
+              className="max-w-full max-h-96 object-contain rounded-md border"
             />
           ) : (
             <label
