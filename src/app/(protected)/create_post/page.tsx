@@ -67,7 +67,7 @@ export default function CreatePostPage() {
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-[60rem] max-h-[35rem] object-contain rounded-md"
+              className="w-[50rem] max-h-[35rem] object-contain rounded-md"
             />
           ) : (
             <label
