@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function CreatePostPage() {
   const { data: session, status: sessionStatus } = useSession();
@@ -11,7 +11,6 @@ export default function CreatePostPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mockPosts, setMockPosts] = useState<{ image: string; caption: string }[]>([]);
 
-  const router = useRouter();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -62,10 +61,7 @@ export default function CreatePostPage() {
 
   return (
     <div className="container mx-auto w-[60rem] p-4">
-      <button
-        onClick={() => router.push("/profile")}
-        className="text-blue-600 hover:underline flex items-center mb-4"
-      >
+       <Link href="/profile" className="text-blue-600 hover:underline flex items-center mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -81,7 +77,7 @@ export default function CreatePostPage() {
           />
         </svg>
         Back to Profile
-      </button>
+      </Link>
       <h1 className="text-2xl font-bold mb-4 text-[2rem] m-10">Create a Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
