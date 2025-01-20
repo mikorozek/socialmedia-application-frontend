@@ -38,6 +38,20 @@ const mockMessages = [
     content: "Hi there!",
     message_date: "2025-01-18T19:34:34Z",
   },
+  {
+    id: 3,
+    conversation_id: 2,
+    user_id: 3,
+    content: "Nice gob!",
+    message_date: "2025-01-18T19:34:34Z",
+  },
+  {
+    id: 4,
+    conversation_id: 2,
+    user_id: 1,
+    content: "Thank you!",
+    message_date: "2025-01-18T19:34:34Z",
+  },
 ];
 
 export default function ChatsPage() {
@@ -53,22 +67,22 @@ export default function ChatsPage() {
 
   const emojis = ["😀", "😂", "😍", "👍", "🙏", "🎉", "❤️"];
 
-  useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8080/ws?user_id=${userId}`);
+  // useEffect(() => {
+  //   const ws = new WebSocket(`ws://localhost:8080/ws?user_id=${userId}`);
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.conversation_id === selectedChat) {
-        setMessages((prev) => [...prev, data]);
-      }
-    };
+  //   ws.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     if (data.conversation_id === selectedChat) {
+  //       setMessages((prev) => [...prev, data]);
+  //     }
+  //   };
 
-    setSocket(ws);
+  //   setSocket(ws);
 
-    return () => {
-      ws.close();
-    };
-  }, [userId, selectedChat]);
+  //   return () => {
+  //     ws.close();
+  //   };
+  // }, [userId, selectedChat]);
 
   useEffect(() => {
     async function fetchChats() {
@@ -86,6 +100,16 @@ export default function ChatsPage() {
 
   useEffect(() => {
     if (selectedChat) {
+      // Uncomment for real API call
+        /*
+        const response = await fetch(
+          `/api/conversations/messages/get?conversation_id=${selectedChat}&user_id=${userId}&limit=50`
+        );
+        const data = await response.json();
+        setMessages(data);
+        */
+        // Use mock data for testing
+      console.log('SELECTED CHAT', selectedChat)
       async function fetchMessages() {
         const filteredMessages = mockMessages.filter(
           (message) => message.conversation_id === selectedChat
@@ -113,23 +137,23 @@ export default function ChatsPage() {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    if (selectedChat) {
-      async function fetchMessages() {
-        // Uncomment for real API call
-        /*
-        const response = await fetch(
-          `/api/conversations/messages/get?conversation_id=${selectedChat}&user_id=${userId}&limit=50`
-        );
-        const data = await response.json();
-        setMessages(data);
-        */
-        // Use mock data for testing
-        setMessages(mockMessages);
-      }
-      fetchMessages();
-    }
-  }, [selectedChat, userId]);
+  // useEffect(() => {
+  //   if (selectedChat) {
+  //     async function fetchMessages() {
+  //       // Uncomment for real API call
+  //       /*
+  //       const response = await fetch(
+  //         `/api/conversations/messages/get?conversation_id=${selectedChat}&user_id=${userId}&limit=50`
+  //       );
+  //       const data = await response.json();
+  //       setMessages(data);
+  //       */
+  //       // Use mock data for testing
+  //       setMessages(mockMessages);
+  //     }
+  //     fetchMessages();
+  //   }
+  // }, [selectedChat, userId]);
 
   const handleCreateChat = async () => {
     const selectedUsers = prompt("Enter usernames for the new chat, separated by commas:");
@@ -175,6 +199,9 @@ export default function ChatsPage() {
   
         // Simulate a successful response by adding the new chat
         setChats((prev) => [...prev, newChat]);
+
+        setMessages([]);
+        
         alert("Chat created successfully!");
       } else {
         alert("A chat must include at least two users.");
