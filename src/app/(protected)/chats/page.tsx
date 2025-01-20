@@ -213,6 +213,22 @@ export default function ChatsPage() {
 
   const handleSendMessage = async () => {
     if (selectedChat && newMessage.trim()) {
+      // Создаем новое сообщение
+      const newMessageObj = {
+        id: mockMessages.length + 1,
+        conversation_id: selectedChat,
+        user_id: userId,
+        content: newMessage,
+        message_date: new Date().toISOString(),
+      };
+  
+      mockMessages.push(newMessageObj);
+      setMessages((prev) => [...prev, newMessageObj]);
+  
+      setNewMessage("");
+  
+      // UNCOMMENT API FOR REAL USE
+      /*
       await fetch(`/api/conversations/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -222,9 +238,10 @@ export default function ChatsPage() {
           content: newMessage,
         }),
       });
-      setNewMessage("");
+      */
     }
   };
+  
 
   const handleEmojiClick = (emoji) => {
     setNewMessage((prev) => prev + emoji);
