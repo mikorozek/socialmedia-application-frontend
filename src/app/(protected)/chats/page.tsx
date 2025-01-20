@@ -2,12 +2,50 @@
 
 import { useState, useEffect } from "react";
 
+// Mock data
+const mockChats = [
+  {
+    id: 1,
+    users: [{ user_id: 1, username: "user1", email: "user1@test.com" }],
+    last_message: { content: "Hello!", message_date: "2025-01-18T19:33:34Z" },
+  },
+  {
+    id: 2,
+    users: [{ user_id: 2, username: "user2", email: "user2@test.com" }],
+    last_message: { content: "Hi!", message_date: "2025-01-18T19:33:34Z" },
+  },
+];
+
+const mockUsers = [
+  { user_id: 2, username: "testuser1", email: "test1@example.com" },
+  { user_id: 3, username: "testuser2", email: "test2@example.com" },
+  { user_id: 4, username: "user1", email: "user1@test.com" },
+  { user_id: 5, username: "user2", email: "user2@test.com" },
+];
+
+const mockMessages = [
+  {
+    id: 1,
+    conversation_id: 1,
+    user_id: 1,
+    content: "Hello!",
+    message_date: "2025-01-18T19:33:34Z",
+  },
+  {
+    id: 2,
+    conversation_id: 1,
+    user_id: 2,
+    content: "Hi there!",
+    message_date: "2025-01-18T19:34:34Z",
+  },
+];
+
 export default function ChatsPage() {
   const [userId, setUserId] = useState(1);
-  const [chats, setChats] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [chats, setChats] = useState(mockChats); // Using mock data for chats
+  const [users, setUsers] = useState(mockUsers); // Using mock data for users
   const [selectedChat, setSelectedChat] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(mockMessages); // Using mock data for messages
   const [newMessage, setNewMessage] = useState("");
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); 
@@ -34,18 +72,43 @@ export default function ChatsPage() {
 
   useEffect(() => {
     async function fetchChats() {
+      // Uncomment for real API call
+      /*
       const response = await fetch(`/api/conversations/recent?user_id=${userId}&limit=50`);
       const data = await response.json();
       setChats(data);
+      */
+      // Use mock data for testing
+      setChats(mockChats);
     }
     fetchChats();
   }, [userId]);
 
   useEffect(() => {
+    if (selectedChat) {
+      async function fetchMessages() {
+        const filteredMessages = mockMessages.filter(
+          (message) => message.conversation_id === selectedChat
+        );
+        setMessages(filteredMessages);
+      }
+      fetchMessages();
+    } else {
+      setMessages([]);
+    }
+  }, [selectedChat]);
+
+
+  useEffect(() => {
     async function fetchUsers() {
+      // Uncomment for real API call
+      /*
       const response = await fetch(`/api/users/search?query=`);
       const data = await response.json();
       setUsers(data);
+      */
+      // Use mock data for testing
+      setUsers(mockUsers);
     }
     fetchUsers();
   }, []);
@@ -53,11 +116,16 @@ export default function ChatsPage() {
   useEffect(() => {
     if (selectedChat) {
       async function fetchMessages() {
+        // Uncomment for real API call
+        /*
         const response = await fetch(
           `/api/conversations/messages/get?conversation_id=${selectedChat}&user_id=${userId}&limit=50`
         );
         const data = await response.json();
         setMessages(data);
+        */
+        // Use mock data for testing
+        setMessages(mockMessages);
       }
       fetchMessages();
     }
@@ -70,13 +138,25 @@ export default function ChatsPage() {
       const userIds = users
         .filter((user) => usernames.includes(user.username))
         .map((user) => user.user_id);
-      if (userIds.length >= 2) {
+      if (userIds.length == 1) {
+        // Uncomment for real API call
+        /*
         try {
           const response = await fetch(`/api/conversations/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_ids: userIds }),
           });
+  
+          // Check if the response is not OK
+          if (!response.ok) {
+            const errorText = await response.text(); // Get raw text response
+            console.error("Error creating chat:", errorText);
+            alert(`Error creating chat: ${errorText}`);
+            return;
+          }
+  
+          // Parse the response only if it's a valid JSON
           const newChat = await response.json();
           setChats((prev) => [...prev, newChat]);
           alert("Chat created successfully!");
@@ -84,11 +164,25 @@ export default function ChatsPage() {
           console.error("Failed to create chat", error);
           alert("Error creating chat. Please try again.");
         }
+        */
+        
+        // Mock chat creation, create an empty chat
+        const newChat = {
+          id: chats.length + 1, // Incrementing the ID for the new chat
+          users: users.filter((user) => userIds.includes(user.user_id)), // Assign users to the new chat
+          last_message: null, // No messages initially
+        };
+  
+        // Simulate a successful response by adding the new chat
+        setChats((prev) => [...prev, newChat]);
+        alert("Chat created successfully!");
       } else {
         alert("A chat must include at least two users.");
       }
     }
   };
+  
+  
 
   const handleSendMessage = async () => {
     if (selectedChat && newMessage.trim()) {
