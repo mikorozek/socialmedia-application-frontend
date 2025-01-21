@@ -2,7 +2,18 @@
 
 import { useState, useEffect } from "react";
 import CreateChatModal from "../../components/CreateModalChat";
+import ProfileModal from "../../components/ProfileModal";
+
 // Mock data
+
+const currentUser = {
+  id: 1,
+  username: "sofijka",
+  email: "sofianasekajlo4@gmail.com",
+  description: "Frontend developer and coffee enthusiast ☕",
+};
+
+
 const mockChats = [
   {
     id: 1,
@@ -162,6 +173,10 @@ export default function ChatsPage() {
   //   }
   // }, [selectedChat, userId]);
 
+  const handleProfileClick = () => {
+    setIsProfileModalOpen(true); // Открыть модальное окно профиля
+  };
+  
   const handleCreateChat = async (userId) => {
     if (userId) {
 
@@ -258,7 +273,15 @@ export default function ChatsPage() {
   return (
     <div className="flex text-white" style={{ height: "53.5em", backgroundColor: "#131313" }}>
       <div className="w-1/4 bg-gray-1000 p-4 border-r border-gray-700 relative">
-        <h2 className="text-lg font-bold mb-6">Chats</h2>
+        <div className="flex items-center mb-4">
+           <img
+              src="https://i0.wp.com/raqobat.gov.uz/wp-content/uploads/2024/02/9f5cfde3-77c9-1610-8b88-8d4242ae9cbf-1.webp?w=860&ssl=1"
+              alt="Profile"
+              className="w-10 h-8 cursor-pointer"
+              onClick={handleProfileClick}
+            />
+          <h2 className="text-lg font-bold">Chats</h2>
+        </div>
 
         <input
           type="text"
@@ -267,7 +290,7 @@ export default function ChatsPage() {
           placeholder="Search chats..."
           className="w-full p-2 mb-4 rounded-lg bg-gray-700 text-white"
         />
-
+        
         <ul>
           {filteredChats.map((chat) => (
             <li
