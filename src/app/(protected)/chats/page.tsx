@@ -17,7 +17,7 @@ type User = {
 // Mock data
 
 const currentUser = {
-  id: 1,
+  id: 6,
   username: "sofijka",
   email: "sofianasekajlo4@gmail.com",
   description: "Frontend developer and coffee enthusiast ☕",
