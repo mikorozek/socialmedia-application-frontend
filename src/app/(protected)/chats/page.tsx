@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import CreateChatModal from "../../components/CreateModalChat";
 // Mock data
 const mockChats = [
   {
@@ -55,6 +55,7 @@ const mockMessages = [
 ];
 
 export default function ChatsPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(1);
   const [chats, setChats] = useState(mockChats); // Using mock data for chats
   const [users, setUsers] = useState(mockUsers); // Using mock data for users
@@ -132,7 +133,12 @@ export default function ChatsPage() {
       setUsers(data);
       */
       // Use mock data for testing
-      setUsers(mockUsers);
+      //setUsers(mockUsers);
+      // Mock API response
+      const matchingUsers = mockUsers.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredUsers(matchingUsers);
     }
     fetchUsers();
   }, []);
@@ -213,7 +219,6 @@ export default function ChatsPage() {
 
   const handleSendMessage = async () => {
     if (selectedChat && newMessage.trim()) {
-      // Создаем новое сообщение
       const newMessageObj = {
         id: mockMessages.length + 1,
         conversation_id: selectedChat,
@@ -284,9 +289,16 @@ export default function ChatsPage() {
           ))}
         </ul>
 
+        {isModalOpen && (
+          <CreateChatModal
+            users={users}
+            onClose={() => setIsModalOpen(false)}
+            onCreateChat={handleCreateChat}
+          />
+        )}
         <button
           className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-blue-600 text-white text-2xl flex items-center justify-center"
-          onClick={handleCreateChat}
+          onClick={() => setIsModalOpen(true)}
         >
           +
         </button>
