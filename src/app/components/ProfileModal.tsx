@@ -15,7 +15,7 @@ type ProfileModalProps = {
 };
 
 export default function ProfileModal({ user, isEditable, onClose }: ProfileModalProps) {
-  const { username, email, description } = user;
+  const {id, username, email, description } = user;
 
   const handleEdit = () => {
     if (isEditable) {
@@ -29,22 +29,24 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
       style={{ fontSize: "1.1em" }}
     >
       <div className="bg-gray-900 rounded-lg p-6 pt-2 w-1/3 text-white relative">
-        <div className="flex items-center mb-6">
-          <h2 className="text-lg font-bold mr-[29rem]">Profile</h2>
-          {isEditable && (
-          <button
-            onClick={handleEdit}
-            className="p-2 rounded-lg hover:bg-gray-700 mr-[0.5rem]"
-          >
-            🖊
-          </button>
-        )}
-          <button
-            onClick={onClose}
-            className="p-2 text-gray-400 rounded-lg hover:bg-gray-700"
-          >
-            ✕
-          </button>
+        <div className="flex items-center mb-6 justify-between">
+          <h2 className="text-lg font-bold">Profile</h2>
+          <div>
+            {isEditable && (
+            <button
+              onClick={handleEdit}
+              className="p-2 rounded-lg hover:bg-gray-700"
+            >
+              🖊
+            </button>
+            )}
+            <button
+              onClick={onClose}
+              className="p-2 text-gray-400 rounded-lg hover:bg-gray-700"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         <div className="mb-6">
