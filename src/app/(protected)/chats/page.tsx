@@ -205,7 +205,6 @@ export default function ChatsPage() {
         setChats((prev) => [...prev, newChat]);
         setSelectedChat(newChat.id)
         setMessages([]);
-        
       }
     }
   };
