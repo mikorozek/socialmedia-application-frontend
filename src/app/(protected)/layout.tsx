@@ -10,7 +10,6 @@ export default function ProtectedLayout({
         <>
             <Header />
             <main className="relative pb-20">{children}</main> {/* Add padding for footer */}
-            <Footer />
         </>
     );
 }
