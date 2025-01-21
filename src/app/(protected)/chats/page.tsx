@@ -139,7 +139,7 @@ export default function ChatsPage() {
       const matchingUsers = mockUsers.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredUsers(matchingUsers);
+      setUsers(matchingUsers);
     }
     fetchUsers();
   }, []);
@@ -162,14 +162,12 @@ export default function ChatsPage() {
   //   }
   // }, [selectedChat, userId]);
 
-  const handleCreateChat = async () => {
-    const selectedUsers = prompt("Enter usernames for the new chat, separated by commas:");
-    if (selectedUsers) {
-      const usernames = selectedUsers.split(",").map((name) => name.trim());
-      const userIds = users
-        .filter((user) => usernames.includes(user.username))
-        .map((user) => user.user_id);
-      if (userIds.length == 1) {
+  const handleCreateChat = async (userId) => {
+    if (userId) {
+
+      const selectedUser = users.find((user) => user.user_id === userId);
+
+      if (selectedUser) {
         // Uncomment for real API call
         /*
         try {
@@ -190,7 +188,6 @@ export default function ChatsPage() {
           // Parse the response only if it's a valid JSON
           const newChat = await response.json();
           setChats((prev) => [...prev, newChat]);
-          alert("Chat created successfully!");
         } catch (error) {
           console.error("Failed to create chat", error);
           alert("Error creating chat. Please try again.");
@@ -200,18 +197,15 @@ export default function ChatsPage() {
         // Mock chat creation, create an empty chat
         const newChat = {
           id: chats.length + 1, // Incrementing the ID for the new chat
-          users: users.filter((user) => userIds.includes(user.user_id)), // Assign users to the new chat
+          users: [selectedUser],
           last_message: null, // No messages initially
         };
   
         // Simulate a successful response by adding the new chat
         setChats((prev) => [...prev, newChat]);
-
+        setSelectedChat(newChat.id)
         setMessages([]);
         
-        alert("Chat created successfully!");
-      } else {
-        alert("A chat must include at least two users.");
       }
     }
   };
@@ -254,8 +248,12 @@ export default function ChatsPage() {
     setEmojiPickerOpen(false);
   };
 
-  const filteredChats = chats.filter((chat) =>
-    chat.users.some((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredChats = chats.filter(
+    (chat) =>
+      Array.isArray(chat.users) &&
+      chat.users.some((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+      )
   );
 
   return (
@@ -399,3 +397,4 @@ export default function ChatsPage() {
     </div>
   );
 }
+
