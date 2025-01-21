@@ -18,9 +18,9 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    username,
+    username: username || "",
     password: "",
-    description,
+    description: description || "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,17 +34,23 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
 
   const handleSaveClick = async () => {
     try {
+      // Создаем объект для отправки
+      const payload: Record<string, string | number> = {
+        user_id: id,
+        username: formData.username.trim(),
+        description: formData.description.trim(),
+      };
+
+      if (formData.password.trim()) {
+        payload.password = formData.password.trim();
+      }
+
       const response = await fetch("/api/users/profile/edit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          user_id: id,
-          username: formData.username,
-          password: formData.password,
-          description: formData.description,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -98,6 +104,7 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
+                placeholder="Enter username"
                 className="ml-3 p-2 rounded-lg bg-gray-700 text-white"
               />
             ) : (
@@ -115,7 +122,7 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder="Enter your description"
+                placeholder="Enter description"
                 className="w-full p-2 rounded-lg bg-gray-700 text-white"
               />
             ) : (
