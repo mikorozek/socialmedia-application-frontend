@@ -1,24 +1,20 @@
 import React from "react";
 
-// Типы данных
+
 type User = {
   id: number;
   username: string;
   email: string;
   description: string;
-}
+};
 
 type ProfileModalProps = {
   user: User;
   isEditable: boolean;
   onClose: () => void;
-}
+};
 
-const ProfileModal: React.FC<ProfileModalProps> = ({
-  user,
-  isEditable,
-  onClose,
-}) => {
+export default function ProfileModal({ user, isEditable, onClose }: ProfileModalProps) {
   const { username, email, description } = user;
 
   const handleEdit = () => {
@@ -68,6 +64,4 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       </div>
     </div>
   );
-};
-
-export default ProfileModal;
+}
