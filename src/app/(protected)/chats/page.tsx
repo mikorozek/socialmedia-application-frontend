@@ -21,6 +21,7 @@ const mockUsers = [
   { user_id: 3, username: "testuser2", email: "test2@example.com" },
   { user_id: 4, username: "user1", email: "user1@test.com" },
   { user_id: 5, username: "user2", email: "user2@test.com" },
+  { user_id: 6, username: "sofijka", email: "sofianasekajlo4@gmail.com" },
 ];
 
 const mockMessages = [
