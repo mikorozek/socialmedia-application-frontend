@@ -69,6 +69,7 @@ const mockMessages = [
 export default function ChatsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(1);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [chats, setChats] = useState(mockChats); // Using mock data for chats
   const [users, setUsers] = useState(mockUsers); // Using mock data for users
   const [selectedChat, setSelectedChat] = useState(null);
@@ -174,7 +175,7 @@ export default function ChatsPage() {
   // }, [selectedChat, userId]);
 
   const handleProfileClick = () => {
-    setIsProfileModalOpen(true); // Открыть модальное окно профиля
+    setIsProfileModalOpen(true);
   };
   
   const handleCreateChat = async (userId) => {
@@ -406,6 +407,14 @@ export default function ChatsPage() {
           </div>
         )}
       </div>
+
+      {isProfileModalOpen && (
+        <ProfileModal
+          user={currentUser}
+          isEditable={true}
+          onClose={() => setIsProfileModalOpen(false)}
+        />
+      )}
 
       {emojiPickerOpen && (
         <div className="absolute bottom-20 right-4 w-1/5 bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-4 gap-2">
