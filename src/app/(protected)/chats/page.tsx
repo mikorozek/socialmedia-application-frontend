@@ -3,6 +3,16 @@
 import { useState, useEffect } from "react";
 import CreateChatModal from "../../components/CreateModalChat";
 import ProfileModal from "../../components/ProfileModal";
+import { User } from "lucide-react";
+
+
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  description: string;
+};
+
 
 // Mock data
 
@@ -17,22 +27,22 @@ const currentUser = {
 const mockChats = [
   {
     id: 1,
-    users: [{ user_id: 1, username: "user1", email: "user1@test.com" }],
+    users: [{ id: 1, username: "user1", email: "user1@test.com", description: "user1" }],
     last_message: { content: "Hello!", message_date: "2025-01-18T19:33:34Z" },
   },
   {
     id: 2,
-    users: [{ user_id: 2, username: "user2", email: "user2@test.com" }],
+    users: [{ id: 2, username: "user2", email: "user2@test.com", description: "user2" }],
     last_message: { content: "Hi!", message_date: "2025-01-18T19:33:34Z" },
   },
 ];
 
 const mockUsers = [
-  { user_id: 2, username: "testuser1", email: "test1@example.com" },
-  { user_id: 3, username: "testuser2", email: "test2@example.com" },
-  { user_id: 4, username: "user1", email: "user1@test.com" },
-  { user_id: 5, username: "user2", email: "user2@test.com" },
-  { user_id: 6, username: "sofijka", email: "sofianasekajlo4@gmail.com" },
+  { id: 2, username: "testuser1", email: "test1@example.com", description: "testuser1" },
+  { id: 3, username: "testuser2", email: "test2@example.com", description: "testuser2" },
+  { id: 4, username: "user1", email: "user1@test.com", description: "user1" },
+  { id: 5, username: "user2", email: "user2@test.com", description: "user2" },
+  { id: 6, username: "sofijka", email: "sofianasekajlo4@gmail.com", description: "sooofijka" },
 ];
 
 const mockMessages = [
@@ -72,6 +82,7 @@ export default function ChatsPage() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [chats, setChats] = useState(mockChats); // Using mock data for chats
   const [users, setUsers] = useState(mockUsers); // Using mock data for users
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState(mockMessages); // Using mock data for messages
   const [newMessage, setNewMessage] = useState("");
@@ -137,6 +148,8 @@ export default function ChatsPage() {
   }, [selectedChat]);
 
 
+  
+
   useEffect(() => {
     async function fetchUsers() {
       // Uncomment for real API call
@@ -174,14 +187,21 @@ export default function ChatsPage() {
   //   }
   // }, [selectedChat, userId]);
 
-  const handleProfileClick = () => {
+  const handleUserClick = (user: User) => {
+    console.log(user)
+    setSelectedUser(user);
+    setIsProfileModalOpen(true);
+  };
+
+  const handleOwnerProfileClick = () => {
+    setSelectedUser(currentUser);
     setIsProfileModalOpen(true);
   };
   
-  const handleCreateChat = async (userId) => {
+  const handleCreateChat = async (userId: number) => {
     if (userId) {
 
-      const selectedUser = users.find((user) => user.user_id === userId);
+      const selectedUser = users.find((user) => user.id === userId);
 
       if (selectedUser) {
         // Uncomment for real API call
@@ -279,7 +299,7 @@ export default function ChatsPage() {
               src="https://i0.wp.com/raqobat.gov.uz/wp-content/uploads/2024/02/9f5cfde3-77c9-1610-8b88-8d4242ae9cbf-1.webp?w=860&ssl=1"
               alt="Profile"
               className="w-10 h-8 cursor-pointer"
-              onClick={handleProfileClick}
+              onClick={handleOwnerProfileClick}
             />
           <h2 className="text-lg font-bold">Chats</h2>
         </div>
@@ -328,15 +348,24 @@ export default function ChatsPage() {
 
       <div className="flex-1 flex flex-col">
         <div className="p-4 border-b border-gray-700 bg-gray-1000 flex-shrink-0" style={{ height: "4em" }}>
-          {selectedChat ? (
-            <h2 className="text-lg font-bold">
-              {chats.find((chat) => chat.id === selectedChat)?.users
-                .map((user) => user.username)
-                .join(", ")}
-            </h2>
-          ) : (
-            <h2 className="text-lg font-bold">Select a user to start chatting</h2>
-          )}
+        {selectedChat ? (
+        <h2 className="text-lg font-bold">
+          {chats
+            .find((chat) => chat.id === selectedChat)
+            ?.users.map((user) => (
+              <span
+                key={user.id}
+                className="cursor-pointer text-blue-400 hover:underline"
+                onClick={() => handleUserClick(user)}
+              >
+                {user.username}
+              </span>
+            ))
+            .reduce((prev, curr) => [prev, ", ", curr])}
+        </h2>
+      ) : (
+        <h2 className="text-lg font-bold">Select a user to start chatting</h2>
+      )}
         </div>
 
         <div
@@ -408,11 +437,14 @@ export default function ChatsPage() {
         )}
       </div>
 
-      {isProfileModalOpen && (
+      {isProfileModalOpen && selectedUser && (
         <ProfileModal
-          user={currentUser}
-          isEditable={true}
-          onClose={() => setIsProfileModalOpen(false)}
+          user={selectedUser}
+          isEditable={selectedUser.id === currentUser.id} // Если выбранный пользователь — текущий, разрешить редактирование
+          onClose={() => {
+            setIsProfileModalOpen(false);
+            setSelectedUser(null); // Сбрасываем выбранного пользователя
+          }}
         />
       )}
 
