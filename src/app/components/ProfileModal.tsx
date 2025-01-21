@@ -28,7 +28,7 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       style={{ fontSize: "1.1em" }}
     >
-      <div className="bg-gray-900 rounded-lg p-6 w-1/3 text-white relative">
+      <div className="bg-gray-900 rounded-lg p-6 pt-2 w-1/3 text-white relative">
         <div className="flex items-center mb-6">
           <h2 className="text-lg font-bold mr-[29rem]">Profile</h2>
           {isEditable && (
