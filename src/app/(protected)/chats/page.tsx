@@ -355,7 +355,7 @@ export default function ChatsPage() {
             ?.users.map((user) => (
               <span
                 key={user.id}
-                className="cursor-pointer text-blue-400 hover:underline"
+                className="cursor-pointer text-bold"
                 onClick={() => handleUserClick(user)}
               >
                 {user.username}
