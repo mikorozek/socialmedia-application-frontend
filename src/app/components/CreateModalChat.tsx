@@ -16,6 +16,7 @@ export default function CreateChatModal({ users, onClose, onCreateChat }) {
 
   const handleUserClick = (user) => {
     onCreateChat(user.user_id);
+    
     onClose();
   };
 
