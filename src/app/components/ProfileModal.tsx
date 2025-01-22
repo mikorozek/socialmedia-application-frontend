@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 type User = {
   id: number;
@@ -8,20 +9,50 @@ type User = {
 };
 
 type ProfileModalProps = {
-  user: User;
+  user: number;
   isEditable: boolean;
   onClose: () => void;
 };
 
-export default function ProfileModal({ user, isEditable, onClose }: ProfileModalProps) {
-  const { id, username, email, description } = user;
-
+export default function ProfileModal({
+  user,
+  isEditable,
+  onClose,
+}: ProfileModalProps) {
+  const [userData, setUserData] = useState<User | null>(null);
+  const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    username: username || "",
+    username: "",
     password: "",
-    description: description || "",
+    description: "",
   });
+
+  useEffect(() => {
+    if (!session?.user?.id) {
+      return;
+    }
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/users/profile?user_id=${user}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data: User = await response.json();
+        setUserData(data);
+        setFormData({
+          username: data.username,
+          password: "",
+          description: data.description,
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    if (session?.user?.id) {
+      fetchUserData();
+    }
+  }, [user, session?.user?.id]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,7 +66,7 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
   const handleSaveClick = async () => {
     try {
       const payload: Record<string, string | number> = {
-        user_id: id,
+        user_id: user,
         username: formData.username.trim(),
         description: formData.description.trim(),
       };
@@ -57,6 +88,15 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
       }
 
       alert("Profile updated successfully!");
+      const freshDataResponse = await fetch(
+        `/api/users/profile?user_id=${user}`,
+      );
+      if (!freshDataResponse.ok) {
+        throw new Error("Failed to fetch updated profile data");
+      }
+
+      const freshData = await freshDataResponse.json();
+      setUserData(freshData);
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -107,11 +147,13 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
                 className="ml-3 p-2 rounded-lg bg-gray-700 text-white"
               />
             ) : (
-              <h3 className="text-xl font-semibold ml-3">{username}</h3>
+              <h3 className="text-xl font-semibold ml-3">
+                {userData?.username}
+              </h3>
             )}
           </div>
           <div className="mb-4">
-            <p className="text-lg">{email}</p>
+            <p className="text-lg">{userData?.email}</p>
             <p className="text-sm text-gray-400">Email</p>
           </div>
           <div className="mb-4">
@@ -126,7 +168,7 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
               />
             ) : (
               <>
-                <p className="text-lg">{description}</p>
+                <p className="text-lg">{userData?.description}</p>
                 <p className="text-sm text-gray-400">Description</p>
               </>
             )}
