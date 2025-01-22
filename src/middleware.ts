@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 type PublicPath = "/login" | "/register" | "/";
 const PUBLIC_PATHS: PublicPath[] = ["/login", "/register", "/"];
-
 const PUBLIC_PREFIXES = [
   "/api/verify",
+  "/api/auth",
   "_next",
   "/static",
   "/images",
@@ -29,14 +29,22 @@ export default withAuth(
   function middleware(req: NextRequestWithAuth) {
     const path = req.nextUrl.pathname;
 
-    if (isPublicPath(path) && req.nextauth.token) {
-      if (path.match(/\.(jpg|jpeg|png|gif|svg|ico)$/)) {
+    console.log("Middleware processing:", {
+      path,
+      isPublic: isPublicPath(path),
+      hasToken: !!req.nextauth.token,
+      token: req.nextauth.token,
+    });
+
+    if (path.startsWith("/api/")) {
+      if (isPublicPath(path)) {
         return NextResponse.next();
       }
-      return NextResponse.redirect(new URL("/conversations", req.url));
-    }
 
-    if (path.startsWith("/api/") && !isPublicPath(path) && req.nextauth.token) {
+      if (!req.nextauth.token) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
       const requestHeaders = new Headers(req.headers);
       requestHeaders.set("user-id", req.nextauth.token.id as string);
       requestHeaders.set("x-auth-timestamp", Date.now().toString());
@@ -48,17 +56,26 @@ export default withAuth(
       });
     }
 
+    if (isPublicPath(path)) {
+      if (req.nextauth.token && !path.match(/\.(jpg|jpeg|png|gif|svg|ico)$/)) {
+        return NextResponse.redirect(new URL("/conversations", req.url));
+      }
+      return NextResponse.next();
+    }
+
     return NextResponse.next();
   },
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        return isPublicPath(req.nextUrl.pathname) || !!token;
+        const path = req.nextUrl.pathname;
+        console.log("Auth check:", {
+          path,
+          isPublic: isPublicPath(path),
+          hasToken: !!token,
+        });
+        return isPublicPath(path) || !!token;
       },
     },
   },
 );
-
-export const config = {
-  matcher: ["/:path*"],
-};
