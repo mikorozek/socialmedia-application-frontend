@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/api/:path*",
+        has: [
+          {
+            type: "header",
+            key: "next-auth.session-token",
+          },
+        ],
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_HOST}:${process.env.NEXT_PUBLIC_BACKEND_PORT}/api/:path*`,
       },
     ];
