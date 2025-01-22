@@ -34,7 +34,6 @@ export default function ProfileModal({ user, isEditable, onClose }: ProfileModal
 
   const handleSaveClick = async () => {
     try {
-      // Создаем объект для отправки
       const payload: Record<string, string | number> = {
         user_id: id,
         username: formData.username.trim(),
