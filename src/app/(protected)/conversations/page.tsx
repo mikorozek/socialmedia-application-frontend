@@ -3,12 +3,15 @@
 import type { Conversation, Message } from "@/types/types";
 import { useState, useEffect, useMemo } from "react";
 import CreateConversationModal from "../../components/CreateConversationModal";
+import ProfileModal from "../../components/ProfileModal";
 import { useSession } from "next-auth/react";
 
 export default function ConversationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const { data: session, status: sessionStatus } = useSession();
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [unreadConversations, setUnreadConversations] = useState<Set<number>>(
     new Set(),
   );
@@ -239,6 +242,11 @@ export default function ConversationsPage() {
     }
   };
 
+  const handleUserClick = async (user: number) => {
+    setSelectedUser(user);
+    setIsProfileModalOpen(true);
+  };
+
   const filteredConversations = conversations.filter(
     (conversation) =>
       Array.isArray(conversation.users) &&
@@ -265,7 +273,17 @@ export default function ConversationsPage() {
       style={{ height: "53.5em", backgroundColor: "#131313" }}
     >
       <div className="w-1/4 bg-gray-1000 p-4 border-r border-gray-700 relative">
-        <h2 className="text-lg font-bold mb-6">Conversations</h2>
+        <div className="flex items-center mb-4">
+          <img
+            src="https://i0.wp.com/raqobat.gov.uz/wp-content/uploads/2024/02/9f5cfde3-77c9-1610-8b88-8d4242ae9cbf-1.webp?w=860&ssl=1"
+            alt="Profile"
+            className="w-10 h-8 cursor-pointer"
+            onClick={() =>
+              session?.user?.id && handleUserClick(session.user.id)
+            }
+          />
+          <h2 className="text-lg font-bold">Conversations</h2>
+        </div>
 
         <input
           type="text"
@@ -341,13 +359,22 @@ export default function ConversationsPage() {
                 .find(
                   (conversation) => conversation.id === selectedConversation.id,
                 )
-                ?.users.filter((user) => user.id != session?.user?.id)
-                .map((user) => user.username)
-                .join(", ")}
+                ?.users.filter((user) => user.id !== session?.user?.id)
+                .map((user, index, array) => (
+                  <span key={user.id}>
+                    <span
+                      className="cursor-pointer hover:underline"
+                      onClick={() => handleUserClick(user.id)}
+                    >
+                      {user.username}
+                    </span>
+                    {index < array.length - 1 ? ", " : ""}
+                  </span>
+                ))}
             </h2>
           ) : (
             <h2 className="text-lg font-bold">
-              Select a user to start chatting
+              Select conversation or create new one to start chatting
             </h2>
           )}
         </div>
@@ -366,7 +393,10 @@ export default function ConversationsPage() {
           {sortedMessages?.map((message, index) => (
             <div key={index}>
               {message.user_id !== session?.user?.id && (
-                <p className="ml-2">
+                <p
+                  className="ml-2 cursor-pointer hover:text-blue-400"
+                  onClick={() => handleUserClick(message.user_id)}
+                >
                   {
                     selectedConversation?.users.find(
                       (user) => user.id === message.user_id,
@@ -430,6 +460,17 @@ export default function ConversationsPage() {
           </div>
         )}
       </div>
+
+      {isProfileModalOpen && selectedUser && (
+        <ProfileModal
+          user={selectedUser}
+          isEditable={selectedUser === session?.user?.id}
+          onClose={() => {
+            setIsProfileModalOpen(false);
+            setSelectedUser(null);
+          }}
+        />
+      )}
 
       {emojiPickerOpen && (
         <div className="absolute bottom-20 right-4 w-1/5 bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-4 gap-2">
