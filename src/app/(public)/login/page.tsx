@@ -30,7 +30,7 @@ export default function Login() {
         return;
       }
       if (result?.ok) {
-        router.push("/dashboard");
+        router.push("/conversations");
         router.refresh();
       }
     } catch (err) {
