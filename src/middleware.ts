@@ -45,15 +45,7 @@ export default withAuth(
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const requestHeaders = new Headers(req.headers);
-      requestHeaders.set("user-id", req.nextauth.token.id as string);
-      requestHeaders.set("x-auth-timestamp", Date.now().toString());
-
-      return NextResponse.next({
-        request: {
-          headers: requestHeaders,
-        },
-      });
+      return NextResponse.next();
     }
 
     if (isPublicPath(path)) {
