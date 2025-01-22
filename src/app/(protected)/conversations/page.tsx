@@ -6,6 +6,13 @@ import CreateConversationModal from "../../components/CreateConversationModal";
 import ProfileModal from "../../components/ProfileModal";
 import { useSession } from "next-auth/react";
 
+type Notification = {
+  conversation_id: number;
+  sender_id: number;
+  sender_username: string;
+  content: string;
+};
+
 export default function ConversationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -56,16 +63,16 @@ export default function ConversationsPage() {
     };
 
     ws.onmessage = (event) => {
-      const notification = JSON.parse(event.data);
+      const notification: Notification = JSON.parse(event.data);
 
       const newMessage: Message = {
         user_id: notification.sender_id,
         content: notification.content,
         message_date: new Date().toISOString(),
       };
-      notificationSound?.play().catch((err) => {
-        console.error("Error playing notification sound:", err);
-      });
+
+      notificationSound?.play().catch(console.error);
+
       if (selectedConversation?.id !== notification.conversation_id) {
         setUnreadConversations(
           (prev) => new Set([...prev, notification.conversation_id]),
@@ -76,17 +83,39 @@ export default function ConversationsPage() {
         setMessages((prev) => [...prev, newMessage]);
       }
 
-      setConversations((prev) =>
-        prev.map((conversation) => {
-          if (conversation.id === notification.conversation_id) {
-            return {
-              ...conversation,
-              last_message: newMessage,
-            };
-          }
-          return conversation;
-        }),
-      );
+      setConversations((prev) => {
+        const existingConversationIndex = prev.findIndex(
+          (conv) => conv.id === notification.conversation_id,
+        );
+
+        const updatedConversation = {
+          id: notification.conversation_id,
+          users:
+            existingConversationIndex >= 0
+              ? prev[existingConversationIndex].users
+              : [
+                  {
+                    id: notification.sender_id,
+                    username: notification.sender_username,
+                    email: "",
+                  },
+                ],
+          last_message: {
+            content: notification.content,
+            user_id: notification.sender_id,
+            message_date: new Date().toISOString(),
+          },
+          updated_at: new Date().toISOString(),
+        };
+
+        if (existingConversationIndex === -1) {
+          return [updatedConversation, ...prev];
+        }
+
+        const newConversations = [...prev];
+        newConversations.splice(existingConversationIndex, 1);
+        return [updatedConversation, ...newConversations];
+      });
     };
 
     ws.onerror = (error) => {
