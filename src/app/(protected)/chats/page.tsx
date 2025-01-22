@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import CreateChatModal from "../../components/CreateModalChat";
 import ProfileModal from "../../components/ProfileModal";
 import { User } from "lucide-react";
@@ -77,6 +78,7 @@ const mockMessages = [
 ];
 
 export default function ChatsPage() {
+  const {data: session} = useSession()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(1);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -187,16 +189,51 @@ export default function ChatsPage() {
   //   }
   // }, [selectedChat, userId]);
 
-  const handleUserClick = (user: User) => {
-    console.log(user)
+  const handleUserClick = async (user: User) => {
+    console.log(user);
+    
+
+    /*
+    try {
+      const response = await fetch(`/api/users/profile?user_id=${user.id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch user profile.");
+      }
+      const userProfile = await response.json();
+      setSelectedUser(userProfile);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      alert("Failed to fetch user profile.");
+      return;
+    }
+    */
+  
+
     setSelectedUser(user);
     setIsProfileModalOpen(true);
   };
 
-  const handleOwnerProfileClick = () => {
-    setSelectedUser(currentUser);
-    setIsProfileModalOpen(true);
-  };
+  const handleOwnerProfileClick = async () => {
+    try {
+      /*
+      const response = await fetch('/api/users/profile?user_id=$(session?.user?.id');
+      if (!response.ok) {
+        throw new Error('Failed to fetch current user profile.');
+      }
+      const userProfile = await response.json();
+      setSelectedUser(userProfile);
+      */
+  
+      // Test data
+      setSelectedUser(currentUser);
+      setIsProfileModalOpen(true);
+    } catch (error) {
+      console.error('Error fetching current user profile:', error);
+      alert('Failed to load profile. Please try again later.');
+    }
+   };
+  
+  
   
   const handleCreateChat = async (userId: number) => {
     if (userId) {
@@ -440,10 +477,10 @@ export default function ChatsPage() {
       {isProfileModalOpen && selectedUser && (
         <ProfileModal
           user={selectedUser}
-          isEditable={selectedUser.id === currentUser.id} // Если выбранный пользователь — текущий, разрешить редактирование
+          isEditable={selectedUser.id === currentUser.id}
           onClose={() => {
             setIsProfileModalOpen(false);
-            setSelectedUser(null); // Сбрасываем выбранного пользователя
+            setSelectedUser(null);
           }}
         />
       )}
